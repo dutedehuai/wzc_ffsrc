@@ -528,7 +528,7 @@ static int decode_thread(void *arg)
 
             screen = SDL_SetVideoMode(enc->width, enc->height, 0, flags);
 
-            SDL_WM_SetCaption("FFplay", "FFplay"); // 修改是为了适配视频大小
+            SDL_WM_SetCaption("FFplay", "FFplay"); // 修改是为了适配视频大小的
 
 //          schedule_refresh(is, 40);
             break;
