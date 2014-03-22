@@ -1,4 +1,3 @@
-
 #include "./libavformat/avformat.h"
 
 #if defined(CONFIG_WIN32)
