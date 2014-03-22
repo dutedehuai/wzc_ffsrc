@@ -512,7 +512,7 @@ static int decode_thread(void *arg)
         goto fail;
     }
     is->ic = ic;
-    //初始化audio_index和video_index，以及设置窗口的长宽
+    //初始化audio_index和video_index，以及设置窗口的长宽。
     for (i = 0; i < ic->nb_streams; i++)
     {
         AVCodecContext *enc = ic->streams[i]->actx;
@@ -529,6 +529,7 @@ static int decode_thread(void *arg)
             screen = SDL_SetVideoMode(enc->width, enc->height, 0, flags);
 
             SDL_WM_SetCaption("FFplay", "FFplay"); // 修改是为了适配视频大小的
+            
 
 //          schedule_refresh(is, 40);
             break;
