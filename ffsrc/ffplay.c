@@ -1,5 +1,4 @@
 #include "./libavformat/avformat.h"
-
 #if defined(CONFIG_WIN32)
 #include <sys/types.h>
 #include <sys/timeb.h>
