@@ -1,0 +1,42 @@
+﻿生成启动时间为 2014/3/11 14:14:08。
+     1>项目“E:\study\ffmpeg\ffsrc\ffplay.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“.\Debug\ffplay.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         d:\VS2010\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\Debug\\" /Fd".\Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt ffplay.c
+         ffplay.c
+     1>e:\study\ffmpeg\ffsrc\ffplay.c(94): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\vs2010\vc\include\sys\timeb.h(124) : 参见“_ftime64”的声明
+     1>e:\study\ffmpeg\ffsrc\ffplay.c(371): warning C4018: “>=”: 有符号/无符号不匹配
+       ManifestResourceCompile:
+         所有输出均为最新。
+       Link:
+         d:\VS2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\Debug\ffplay.exe" /INCREMENTAL /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\Debug\ffplay.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\study\ffmpeg\ffsrc\Debug\ffplay.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\Debug\ffplay.lib" /MACHINE:X86 .\Debug\ffplay.exe.embed.manifest.res
+         .\Debug\allcodecs.obj
+         .\Debug\dsputil.obj
+         .\Debug\imgconvert.obj
+         .\Debug\msrle.obj
+         .\Debug\truespeech.obj
+         .\Debug\utils_codec.obj
+         .\Debug\allformats.obj
+         .\Debug\avidec.obj
+         .\Debug\avio.obj
+         .\Debug\aviobuf.obj
+         .\Debug\cutils.obj
+         .\Debug\file.obj
+         .\Debug\utils_format.obj
+         .\Debug\ffplay.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:".\Debug\ffplay.exe.embed.manifest" /manifest .\Debug\ffplay.exe.intermediate.manifest
+         所有输出均为最新。
+       LinkEmbedManifest:
+         所有输出均为最新。
+         ffplay.vcxproj -> E:\study\ffmpeg\ffsrc\.\Debug\ffplay.exe
+       FinalizeBuildStatus:
+         正在删除文件“.\Debug\ffplay.unsuccessfulbuild”。
+         正在对“.\Debug\ffplay.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\study\ffmpeg\ffsrc\ffplay.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:00.44
