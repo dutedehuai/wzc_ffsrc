@@ -504,7 +504,7 @@ static int decode_thread(void *arg)
     is->audio_stream =  - 1;
 
     memset(ap, 0, sizeof(*ap));
-    //打开媒体文件，并进行相应的初始化
+    //打开媒体文件，并进行相应的初始化。
     err = av_open_input_file(&ic, is->filename, NULL, 0, ap);
     if (err < 0)
     {
@@ -512,7 +512,7 @@ static int decode_thread(void *arg)
         goto fail;
     }
     is->ic = ic;
-    //初始化audio_index和video_index，以及设置窗口的长宽。
+    //初始化audio_index和video_index，以及设置窗口的长宽。。。
     for (i = 0; i < ic->nb_streams; i++)
     {
         AVCodecContext *enc = ic->streams[i]->actx;
