@@ -43,7 +43,7 @@ typedef struct VideoPicture
     SDL_Overlay *bmp;
     int width, height; // source height & width
 } VideoPicture;
-
+//
 typedef struct VideoState
 {
     SDL_Thread *parse_tid;
