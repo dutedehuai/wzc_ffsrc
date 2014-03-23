@@ -55,22 +55,22 @@ AVInputFormat *av_probe_input_format(AVProbeData *pd, int is_opened)
 
     fmt = NULL;
     score_max = 0;
-    for (fmt1 = first_iformat; fmt1 != NULL; fmt1 = fmt1->next)
+    for (fmt1 = first_iformat; fmt1 != NULL; fmt1 = fmt1->next)//调用已经注册的所有文件格式函数来识别
     {
         if (!is_opened)
             continue;
 
         score = 0;
-        if (fmt1->read_probe)
+        if (fmt1->read_probe)//调用某个文件格式函数的read_probe函数检测识别
         {
-            score = fmt1->read_probe(pd);
+            score = fmt1->read_probe(pd);//如果能识别到的话score=100，否则可能为0
         }
-        else if (fmt1->extensions)
+        else if (fmt1->extensions)//再调用某个文件格式函数的扩展名，看是否匹配
         {
-            if (match_ext(pd->filename, fmt1->extensions))
+            if (match_ext(pd->filename, fmt1->extensions))//匹配的话score=50
                 score = 50;
         }
-        if (score > score_max)
+        if (score > score_max)//找到最大匹配的格式，若所有都不匹配score=0, if不成立
         {
             score_max = score;
             fmt = fmt1;
@@ -78,7 +78,7 @@ AVInputFormat *av_probe_input_format(AVProbeData *pd, int is_opened)
     }
     return fmt;
 }
-
+//识别媒体流格式，设置AVFormatContext
 int av_open_input_stream(AVFormatContext **ic_ptr, ByteIOContext *pb, const char *filename,
 						 AVInputFormat *fmt, AVFormatParameters *ap)
 {
@@ -98,13 +98,13 @@ int av_open_input_stream(AVFormatContext **ic_ptr, ByteIOContext *pb, const char
         err = AVERROR_NOMEM;
         goto fail;
     }
-    ic->iformat = fmt;
+    ic->iformat = fmt;//设置AVFormatContext
     if (pb)
-        ic->pb =  *pb;
+        ic->pb =  *pb;//设置AVFormatContext
 
     if (fmt->priv_data_size > 0)
     {
-        ic->priv_data = av_mallocz(fmt->priv_data_size);
+        ic->priv_data = av_mallocz(fmt->priv_data_size);//设置AVFormatContext
         if (!ic->priv_data)
         {
             err = AVERROR_NOMEM;
@@ -113,14 +113,14 @@ int av_open_input_stream(AVFormatContext **ic_ptr, ByteIOContext *pb, const char
     }
     else
     {
-        ic->priv_data = NULL;
+        ic->priv_data = NULL;//设置AVFormatContext
     }
 
-    err = ic->iformat->read_header(ic, ap);
+    err = ic->iformat->read_header(ic, ap);//读取文件头，识别媒体流格式，设置AVFormatContext
     if (err < 0)
         goto fail;
 
-    *ic_ptr = ic;
+    *ic_ptr = ic;//设置AVFormatContext完成
     return 0;
 
 fail: 
@@ -142,27 +142,27 @@ int av_open_input_file(AVFormatContext **ic_ptr, const char *filename, AVInputFo
     file_opened = 0;
     pd->filename = "";
     if (filename)
-        pd->filename = filename;
+        pd->filename = filename;//探测数据AVProbeData成员filename
     pd->buf = NULL;
     pd->buf_size = 0;
 
     must_open_file = 1;
 
-    if (!fmt || must_open_file)
+    if (!fmt || must_open_file)//如果未指定输入文件格式fmt，则探测其格式
     {
-        if (url_fopen(pb, filename, URL_RDONLY) < 0)
+        if (url_fopen(pb, filename, URL_RDONLY) < 0)//广义url_fopen，这里是本地文件file，初始化pb
         {
             err = AVERROR_IO;
             goto fail;
         }
         file_opened = 1;
-        if (buf_size > 0)
+        if (buf_size > 0)//如果指定buf大小，则分配其广义缓冲区pb的大小为buf_size的空间
             url_setbufsize(pb, buf_size);
 
         for (probe_size = PROBE_BUF_MIN; probe_size <= PROBE_BUF_MAX && !fmt; probe_size <<= 1)
         {
             pd->buf = av_realloc(pd->buf, probe_size);
-            pd->buf_size = url_fread(pb, pd->buf, probe_size);
+            pd->buf_size = url_fread(pb, pd->buf, probe_size);//从广义缓冲区pb读取大小为probe_size数据到探测数据区pd
             if (url_fseek(pb, 0, SEEK_SET) == (offset_t) - EPIPE)
             {
                 url_fclose(pb);
@@ -174,7 +174,7 @@ int av_open_input_file(AVFormatContext **ic_ptr, const char *filename, AVInputFo
                 }
             }
 
-            fmt = av_probe_input_format(pd, 1);
+            fmt = av_probe_input_format(pd, 1);//探测格式函数
         }
         av_freep(&pd->buf);
     }
@@ -184,7 +184,7 @@ int av_open_input_file(AVFormatContext **ic_ptr, const char *filename, AVInputFo
         err = AVERROR_NOFMT;
         goto fail;
     }
-
+	//知道其文件格式之后,识别媒体流格式
     err = av_open_input_stream(ic_ptr, pb, filename, fmt, ap);
     if (err)
         goto fail;
@@ -197,7 +197,7 @@ fail:
     *ic_ptr = NULL;
     return err;
 }
-
+//读出一个包的数据，这里是一帧数据
 int av_read_packet(AVFormatContext *s, AVPacket *pkt)
 {
     return s->iformat->read_packet(s, pkt);

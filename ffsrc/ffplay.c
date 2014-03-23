@@ -278,34 +278,34 @@ static int video_display(VideoState *is, AVFrame *src_frame, double pts)
 
 static int video_thread(void *arg)
 {
-    VideoState *is = arg;
+    VideoState *is = arg;//传递总控模块参数is
     AVPacket pkt1,  *pkt = &pkt1;
     int len1, got_picture;
     double pts = 0;
 
-    AVFrame *frame = av_malloc(sizeof(AVFrame));
+    AVFrame *frame = av_malloc(sizeof(AVFrame));//分配一帧的空间
     memset(frame, 0, sizeof(AVFrame));
 
-    alloc_picture(is);
+    alloc_picture(is);//分配SDL显示缓存
 
     for (;;)
     {
-        if (packet_queue_get(&is->videoq, pkt, 1) < 0)
+        if (packet_queue_get(&is->videoq, pkt, 1) < 0)//从待解码视频队列里取出一个包放到pkt里
             break;
 
         SDL_LockMutex(is->video_decoder_mutex);
-        len1 = avcodec_decode_video(is->video_st->actx, frame, &got_picture, pkt->data, pkt->size);
+        len1 = avcodec_decode_video(is->video_st->actx, frame, &got_picture, pkt->data, pkt->size);//对取出的包进行解码!!!!!
         SDL_UnlockMutex(is->video_decoder_mutex);
 
         if (pkt->dts != AV_NOPTS_VALUE)
-            pts = av_q2d(is->video_st->time_base) *pkt->dts;
+            pts = av_q2d(is->video_st->time_base) *pkt->dts;//计算同步时钟??????
 
-        if (got_picture)
+        if (got_picture)//解码成功,显示出来
         {
             if (video_display(is, frame, pts) < 0)
                 goto the_end;
         }
-        av_free_packet(pkt);
+        av_free_packet(pkt);//释放已经解码的包
     }
 
 the_end: 
@@ -325,6 +325,7 @@ static int audio_decode_frame(VideoState *is, uint8_t *audio_buf, double *pts_pt
         while (is->audio_pkt_size > 0)
         {
             SDL_LockMutex(is->audio_decoder_mutex);
+            //音频解码,把包pkt的数据解码,放到audio_buf里,sdl会播放这里的数据
             len1 = avcodec_decode_audio(is->audio_st->actx, (int16_t*)audio_buf,
                             &data_size, is->audio_pkt_data, is->audio_pkt_size);
 
@@ -349,7 +350,7 @@ static int audio_decode_frame(VideoState *is, uint8_t *audio_buf, double *pts_pt
             av_free_packet(pkt);
 
         /* read next packet */
-        if (packet_queue_get(&is->audioq, pkt, 1) < 0)
+        if (packet_queue_get(&is->audioq, pkt, 1) < 0)//从待解码音频包里取出一帧数据
             return  - 1;
 
         is->audio_pkt_data = pkt->data;
@@ -392,7 +393,7 @@ void sdl_audio_callback(void *opaque, Uint8 *stream, int len)
     }
 }
 
-/* open a given stream. Return 0 if OK */
+/* open a given stream. Return 0 if OK */  //启动解码线程
 static int stream_component_open(VideoState *is, int stream_index)
 {
     AVFormatContext *ic = is->ic;
@@ -403,9 +404,9 @@ static int stream_component_open(VideoState *is, int stream_index)
     if (stream_index < 0 || stream_index >= ic->nb_streams)
         return  - 1;
 
-    enc = ic->streams[stream_index]->actx;
+    enc = ic->streams[stream_index]->actx;//取得stream_index对应的流的解码器上下文
 
-    /* prepare audio output */
+    /* prepare audio output *///SDL播放音频相关初始化
     if (enc->codec_type == CODEC_TYPE_AUDIO)
     {
         wanted_spec.freq = enc->sample_rate;
@@ -425,7 +426,7 @@ static int stream_component_open(VideoState *is, int stream_index)
         }
     }
 
-    codec = avcodec_find_decoder(enc->codec_id);
+    codec = avcodec_find_decoder(enc->codec_id);//根据ID获得解码器
 
     if (!codec || avcodec_open(enc, codec) < 0)
         return  - 1;
@@ -433,23 +434,25 @@ static int stream_component_open(VideoState *is, int stream_index)
     switch (enc->codec_type)
     {
     case CODEC_TYPE_AUDIO:
+        //设置总控is 的相关信息
         is->audio_stream = stream_index;
         is->audio_st = ic->streams[stream_index];
         is->audio_buf_size = 0;
         is->audio_buf_index = 0;
-
-        memset(&is->audio_pkt, 0, sizeof(is->audio_pkt));
-        packet_queue_init(&is->audioq);
-        SDL_PauseAudio(0);
+    
+        memset(&is->audio_pkt, 0, sizeof(is->audio_pkt));//初始化保存音频数据的AVPacket
+        packet_queue_init(&is->audioq);//初始化待解码音频队列
+        SDL_PauseAudio(0);//启动音频解码线程
         break;
     case CODEC_TYPE_VIDEO:
+        //设置总控is 的相关信息
         is->video_stream = stream_index;
         is->video_st = ic->streams[stream_index];
 
         is->frame_last_delay = is->video_st->frame_last_delay;
 
-        packet_queue_init(&is->videoq);
-        is->video_tid = SDL_CreateThread(video_thread, is);
+        packet_queue_init(&is->videoq);//初始化待解码视频队列
+        is->video_tid = SDL_CreateThread(video_thread, is);//启动视频解码线程
         break;
     default:
         break;
@@ -502,7 +505,7 @@ static int decode_thread(void *arg)
     is->audio_stream =  - 1;
 
     memset(ap, 0, sizeof(*ap));
-    //打开媒体文件，并进行相应的初始化
+    //打开媒体文件，并进行相应的初始化,完成后相关信息存储在ic里
     err = av_open_input_file(&ic, is->filename, NULL, 0, ap);
     if (err < 0)
     {
@@ -537,10 +540,10 @@ static int decode_thread(void *arg)
     }
 
     if (audio_index >= 0)
-        stream_component_open(is, audio_index);
+        stream_component_open(is, audio_index);//音频解码线程
 
     if (video_index >= 0)
-        stream_component_open(is, video_index);
+        stream_component_open(is, video_index);//视频解码线程
 
     if (is->video_stream < 0 && is->audio_stream < 0)
     {
@@ -548,7 +551,7 @@ static int decode_thread(void *arg)
         ret =  - 1;
         goto fail;
     }
-
+    //读取数据放到待解码队列里
     for (;;)
     {
         if (is->abort_request)

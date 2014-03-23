@@ -122,7 +122,7 @@ static void clean_index(AVFormatContext *s)
         }
     }
 }
-
+//识别媒体流格式使用的函数(av_open_input_stream)
 static int avi_read_header(AVFormatContext *s, AVFormatParameters *ap)
 {
     AVIContext *avi = s->priv_data;
@@ -378,7 +378,7 @@ fail:
 
     return 0;
 }
-
+//在读取一包(帧)数据的函数使用到，(av_read_packet)
 int avi_read_packet(AVFormatContext *s, AVPacket *pkt)
 {
     AVIContext *avi = s->priv_data;
@@ -738,7 +738,7 @@ static int avi_read_close(AVFormatContext *s)
 
     return 0;
 }
-
+//探测文件格式使用的函数，(av_probe_input_format)
 static int avi_probe(AVProbeData *p)
 {
     if (p->buf_size <= 32) // check file header
