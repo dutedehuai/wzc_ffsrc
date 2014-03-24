@@ -342,7 +342,7 @@ int avcodec_decode_video(AVCodecContext *avctx, AVFrame *picture, int *got_pictu
 
     if (buf_size)
     {
-        ret = avctx->codec->decode(avctx, picture, got_picture_ptr, buf, buf_size);
+        ret = avctx->codec->decode(avctx, picture, got_picture_ptr, buf, buf_size);//调用解码器codec的解码函数decode进行解码
 
         if (*got_picture_ptr)
             avctx->frame_number++;

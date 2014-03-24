@@ -294,5 +294,5 @@ AVCodec msrle_decoder =
 	msrle_decode_init, 
 	NULL, 
 	msrle_decode_end, 
-	msrle_decode_frame
+	msrle_decode_frame//解码函数,关联codec->decode
 };
