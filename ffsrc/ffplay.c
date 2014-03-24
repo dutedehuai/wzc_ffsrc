@@ -275,7 +275,7 @@ static int video_display(VideoState *is, AVFrame *src_frame, double pts)
     }
     return 0;
 }
-
+//wzc video_thread
 static int video_thread(void *arg)
 {
     VideoState *is = arg;//传递总控模块参数is
