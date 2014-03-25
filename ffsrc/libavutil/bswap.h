@@ -1,11 +1,11 @@
 #ifndef __BSWAP_H__
 #define __BSWAP_H__
-
+//两字节的变量交换字节顺序
 static inline uint16_t bswap_16(uint16_t x)
 {
     return (x >> 8) | (x << 8);
 }
-
+//四字节的变量交换字节顺序
 static inline uint32_t bswap_32(uint32_t x)
 {
     x = ((x << 8) &0xFF00FF00) | ((x >> 8) &0x00FF00FF);

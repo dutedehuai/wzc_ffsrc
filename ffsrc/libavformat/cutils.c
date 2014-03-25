@@ -1,5 +1,5 @@
 #include "avformat.h"
-
+//在 str 字符串中搜索 val 字符串指示的头，并且去掉头后用*ptr 返回
 int strstart(const char *str, const char *val, const char **ptr)
 {
     const char *p,  *q;
@@ -16,7 +16,7 @@ int strstart(const char *str, const char *val, const char **ptr)
         *ptr = p;
     return 1;
 }
-
+//字符串拷贝函数，拷贝的字符数由 buf_size 指定，更安全的字符串拷贝操作
 void pstrcpy(char *buf, int buf_size, const char *str)
 {
     int c;
