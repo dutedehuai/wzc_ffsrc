@@ -1,3 +1,6 @@
+/*
+文件读写模块定义的数据结构和函数声明，ffplay 把这些全部放到这个.h 文件中
+*/
 #ifndef AVIO_H
 #define AVIO_H
 
@@ -8,16 +11,16 @@ typedef int64_t offset_t;
 #define URL_RDONLY 0
 #define URL_WRONLY 1
 #define URL_RDWR   2
-
+//ByteIOContext的opaque 会连接此结构体
 typedef struct URLContext
 {
-    struct URLProtocol *prot;
+    struct URLProtocol *prot;//本例指向file_protocol
     int flags;
     int max_packet_size; // if non zero, the stream is packetized with this max packet size
-    void *priv_data;
+    void *priv_data;//关联读写协议的某些有用的参数，本例指向文件描述符
     char filename[1]; // specified filename
 } URLContext;
-
+//相当于一个借口，定义各种读写协议要提供的功能
 typedef struct URLProtocol
 {
     const char *name;
@@ -31,10 +34,10 @@ typedef struct URLProtocol
 
 typedef struct ByteIOContext
 {
-    unsigned char *buffer;
-    int buffer_size;
-    unsigned char *buf_ptr,  *buf_end;
-    void *opaque;
+    unsigned char *buffer;//缓存首地址
+    int buffer_size;//缓存大小
+    unsigned char *buf_ptr,  *buf_end;//缓存读写指针以及结束指针
+    void *opaque;//关联URLContext
     int (*read_buf)(void *opaque, uint8_t *buf, int buf_size);
     int (*write_buf)(void *opaque, uint8_t *buf, int buf_size);
     offset_t(*seek)(void *opaque, offset_t offset, int whence);

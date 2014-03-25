@@ -1,3 +1,6 @@
+/*
+协议file的读写相关函数文件
+*/
 #include "../berrno.h"
 
 #include "avformat.h"
@@ -31,7 +34,7 @@ static int file_open(URLContext *h, const char *filename, int flags)
     fd = open(filename, access, 0666);
     if (fd < 0)
         return  - ENOENT;
-    h->priv_data = (void*)(size_t)fd;
+    h->priv_data = (void*)(size_t)fd;//打开之后把文件描述符保存在priv_data里
     return 0;
 }
 
@@ -58,7 +61,7 @@ static int file_close(URLContext *h)
     int fd = (size_t)h->priv_data;
     return close(fd);
 }
-
+//连接URLProtocol, 上层通过file_protocol调用功能函数
 URLProtocol file_protocol =
 {
     "file",

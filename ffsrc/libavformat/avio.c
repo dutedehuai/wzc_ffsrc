@@ -1,3 +1,7 @@
+/*
+此文件实现了 URLProtocol 抽象层广义文件操作函数，由于 URLProtocol 是底层其他具体文件 (file,pipe 等)
+的简单封装，这一层只是一个中转站，大部分函数都是简单中转到底层的具体实现函数。
+*/
 #include "../berrno.h"
 #include "avformat.h"
 
@@ -13,7 +17,8 @@ int register_protocol(URLProtocol *protocol)
     protocol->next = NULL;
     return 0;
 }
-
+//获取url 的前缀协议名称，然后从协议队列里寻找一个名称匹配的协议，
+//根据去协议设置URLContext来关联该协议，最后调用协议的open函数
 int url_open(URLContext **puc, const char *filename, int flags)
 {
     URLContext *uc;
@@ -24,7 +29,7 @@ int url_open(URLContext **puc, const char *filename, int flags)
 
     p = filename;
     q = proto_str;
-    while (*p != '\0' &&  *p != ':')
+    while (*p != '\0' &&  *p != ':')//根据url前缀获取协议名称
     {
         if (!isalpha(*p))  // protocols can only contain alphabetic chars
             goto file_proto;
@@ -42,7 +47,7 @@ file_proto:
     {
         *q = '\0';
     }
-
+    //从协议队列里寻找名称匹配的协议实例
     up = first_protocol;
     while (up != NULL)
     {
@@ -60,7 +65,7 @@ found:
         goto fail;
     }
     strcpy(uc->filename, filename);
-    uc->prot = up;
+    uc->prot = up;//把协议保存在URLContext的port成员里
     uc->flags = flags;
     uc->max_packet_size = 0; // default: stream file
     err = up->url_open(uc, filename, flags);
