@@ -111,14 +111,14 @@ int url_ferror(ByteIOContext *s)
 }
 
 // Input stream
-
+//从文件里读取数据填充到内部缓冲区
 static void fill_buffer(ByteIOContext *s)
 {
     int len;
 
     if (s->eof_reached)
         return ;
-
+    //首先跳转的url_read_buf()函数，再跳转到url_read()，再跳转到实际文件协议的读函数完成读操作
     len = s->read_buf(s->opaque, s->buffer, s->buffer_size);
     if (len <= 0)
     {   // do not modify buffer if EOF reached so that a seek back can be done without rereading data
@@ -134,7 +134,7 @@ static void fill_buffer(ByteIOContext *s)
         s->buf_end = s->buffer + len;
     }
 }
-
+//从内部缓冲区buf读取一字节数据
 int get_byte(ByteIOContext *s) // NOTE: return 0 if EOF, so you cannot use it if EOF handling is necessary
 {
     if (s->buf_ptr < s->buf_end)
@@ -150,7 +150,7 @@ int get_byte(ByteIOContext *s) // NOTE: return 0 if EOF, so you cannot use it if
             return 0;
     }
 }
-
+//从内部缓冲区buf读取2字节数据
 unsigned int get_le16(ByteIOContext *s)
 {
     unsigned int val;
@@ -158,7 +158,7 @@ unsigned int get_le16(ByteIOContext *s)
     val |= get_byte(s) << 8;
     return val;
 }
-
+//从内部缓冲区buf读取4字节数据
 unsigned int get_le32(ByteIOContext *s)
 {
     unsigned int val;
@@ -168,19 +168,19 @@ unsigned int get_le32(ByteIOContext *s)
 }
 
 #define url_write_buf NULL
-
+//把数据读到内部缓冲区buf里
 static int url_read_buf(void *opaque, uint8_t *buf, int buf_size)
 {
     URLContext *h = opaque;
     return url_read(h, buf, buf_size);
 }
-
+//实际调用url_seek
 static offset_t url_seek_buf(void *opaque, offset_t offset, int whence)
 {
     URLContext *h = opaque;
     return url_seek(h, offset, whence);
 }
-
+//设置缓冲区的大小,并重新分配空间
 int url_setbufsize(ByteIOContext *s, int buf_size) // must be called before any I/O
 {
     uint8_t *buffer;
@@ -198,18 +198,18 @@ int url_setbufsize(ByteIOContext *s, int buf_size) // must be called before any 
         s->buf_end = buffer + buf_size;
     return 0;
 }
-
+//ByteIOContext层的打开文件函数
 int url_fopen(ByteIOContext *s, const char *filename, int flags)
 {
     URLContext *h;
 	uint8_t *buffer;
     int buffer_size, max_packet_size;
     int err;
-
+    //调用协议的open函数,这会初始化URLContext *h.
     err = url_open(&h, filename, flags);
     if (err < 0)
         return err;
-   
+   //获取一个包数据大小的最大值,如果为0则设置成IO_BUFFER_SIZE
     max_packet_size = url_get_max_packet_size(h);
     if (max_packet_size)
     {
@@ -219,14 +219,14 @@ int url_fopen(ByteIOContext *s, const char *filename, int flags)
     {
         buffer_size = IO_BUFFER_SIZE;
     }
-
+    //分配内部缓冲区内存,大小为一个包数据大小的最大值
     buffer = av_malloc(buffer_size);
     if (!buffer)
 	{
         url_close(h);
         return  - ENOMEM;
 	}
-
+    //初始化ByteIOContext s,  这里会把URLContext *h 关联到s里
     if (init_put_byte(s,
 					  buffer, 
 					  buffer_size, 
@@ -245,7 +245,7 @@ int url_fopen(ByteIOContext *s, const char *filename, int flags)
 
     return 0;
 }
-
+//释放内部缓冲区buf,调用协议close函数
 int url_fclose(ByteIOContext *s)
 {
     URLContext *h = s->opaque;
@@ -254,7 +254,7 @@ int url_fclose(ByteIOContext *s)
     memset(s, 0, sizeof(ByteIOContext));
     return url_close(h);
 }
-
+//从广义缓冲区读取数据用于解码
 int url_fread(ByteIOContext *s, unsigned char *buf, int size) // get_buffer
 {
     int len, size1;
@@ -263,10 +263,12 @@ int url_fread(ByteIOContext *s, unsigned char *buf, int size) // get_buffer
     while (size > 0)
     {
         len = s->buf_end - s->buf_ptr;
-        if (len > size)
+        if (len > size)//内部缓冲区可读数据大小足够
             len = size;
-        if (len == 0)
+        if (len == 0)//内部缓冲区没有可读数据
         {
+            //如果要读的数据大小size大于内部缓冲区数据的最大值,
+            //则直接从文件里读取数据到输出,并且重置内部缓冲区buf
             if (size > s->buffer_size)
             {
                 len = s->read_buf(s->opaque, buf, size);
@@ -286,6 +288,8 @@ int url_fread(ByteIOContext *s, unsigned char *buf, int size) // get_buffer
                     s->buf_end = s->buffer /* + len*/;
                 }
             }
+            //如果要读的数据大小size小于内部缓冲区数据的最大值,
+            //则先填充内部缓冲区
             else
             {
                 fill_buffer(s);
@@ -294,7 +298,7 @@ int url_fread(ByteIOContext *s, unsigned char *buf, int size) // get_buffer
                     break;
             }
         }
-        else
+        else//内部缓冲区有数据可读,则直接从内部缓冲区读取数据到输出
         {
             memcpy(buf, s->buf_ptr, len);
             buf += len;

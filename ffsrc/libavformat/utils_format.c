@@ -202,7 +202,8 @@ int av_read_packet(AVFormatContext *s, AVPacket *pkt)
 {
     return s->iformat->read_packet(s, pkt);
 }
-
+//添加索引到索引表。有些媒体文件为便于seek，有音视频数据帧有索引，ffplay把这些索引以时间排
+//序放到一个数据中。返回值为添加项的索引。
 int av_add_index_entry(AVStream *st, int64_t pos, int64_t timestamp, int size, int distance, int flags)
 {
     AVIndexEntry *entries,  *ie;
