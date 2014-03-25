@@ -11,7 +11,7 @@ void avcodec_register_all(void)
         return ;
 
     inited = 1;
-
+    
     register_avcodec(&msrle_decoder);
 
     register_avcodec(&truespeech_decoder);

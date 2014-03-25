@@ -399,6 +399,8 @@ void avcodec_init(void)
     if (inited != 0)
         return ;
     inited = 1;
-
+    /*ffplay 把 CPU 当做一个广义的 DSP。有些计算可以用 CPU 自带的加速指令来优化，ffplay 把这类函数
+独立出来放到 dsputil.h 和 dsputil.c 文件中，用函数指针的方法映射到各个 CPU 具体的加速优化实现函数，
+此处初始化这些函数指针。*/
     dsputil_static_init();
 }

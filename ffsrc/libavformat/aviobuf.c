@@ -1,10 +1,13 @@
+/*
+有缓存的广义文件 ByteIOContext 相关的文件操作，比如 open，read，close，seek 等等。
+*/
 #include "../berrno.h"
 #include "avformat.h"
 #include "avio.h"
 #include <stdarg.h>
 
 #define IO_BUFFER_SIZE 32768
-
+//初始化广义文件 ByteIOContext 结构，一些简单的赋值操作。
 int init_put_byte(ByteIOContext *s, 
 				  unsigned char *buffer, 
 				  int buffer_size, 
@@ -38,28 +41,35 @@ int init_put_byte(ByteIOContext *s,
 offset_t url_fseek(ByteIOContext *s, offset_t offset, int whence)
 {
     offset_t offset1;
-
+    //只支持 SEEK_CUR 和 SEEK_SET 定位方式，不支持 SEEK_END 方式。
     if (whence != SEEK_CUR && whence != SEEK_SET)
         return  - EINVAL;
 
     if (whence == SEEK_CUR)
     {
+        //pos是buf_end 相对文件的偏移量
+        //通过此语句算出buf_ptr的相对文件的偏移量
         offset1 = s->pos - (s->buf_end - s->buffer) + (s->buf_ptr - s->buffer);
         if (offset == 0)
             return offset1;
-        offset += offset1;
+        offset += offset1;//seek之后的读写位置相对文件的偏移量
     }
+    //通过此语句算出seek 之后的读写位置相对buffer的偏移量
     offset1 = offset - (s->pos - (s->buf_end - s->buffer));
+    //可以在buffer区里seek
     if (offset1 >= 0 && offset1 <= (s->buf_end - s->buffer))
     {
         s->buf_ptr = s->buffer + offset1; // can do the seek inside the buffer
     }
+    //不可以在buffer区里seek，则要通过文件seek操作从新设置buffer区域
     else
     {
         if (!s->seek)
             return  - EPIPE;
+        //从新设置buffer
         s->buf_ptr = s->buffer;
         s->buf_end = s->buffer;
+        //调用文件seek操作
         if (s->seek(s->opaque, offset, SEEK_SET) == (offset_t) - EPIPE)
             return  - EPIPE;
         s->pos = offset;
@@ -68,12 +78,12 @@ offset_t url_fseek(ByteIOContext *s, offset_t offset, int whence)
 
     return offset;
 }
-
+//广义文件 ByteIOContext 的当前实际偏移量再偏移 offset 字节，调用 url_fseek 实现
 void url_fskip(ByteIOContext *s, offset_t offset)
 {
     url_fseek(s, offset, SEEK_CUR);
 }
-
+//返回当前读写位置偏移量
 offset_t url_ftell(ByteIOContext *s)
 {
     return url_fseek(s, 0, SEEK_CUR);

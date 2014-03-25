@@ -1,3 +1,8 @@
+/*
+定义识别文件格式和媒体类型库使用的宏、数据结构和函数，通常这些宏、
+数据结构和函数在此模块内相对全局有效。
+*/
+
 #ifndef AVFORMAT_H
 #define AVFORMAT_H
 
@@ -36,16 +41,16 @@ extern "C"
 #define AVPROBE_SCORE_MAX	100
 
 #define MAX_STREAMS 20
-
+//较重要的数据结构，保存未解码的一包(帧)数据
 typedef struct AVPacket
 {
     int64_t pts; // presentation time stamp in time_base units
     int64_t dts; // decompression time stamp in time_base units
     int64_t pos; // byte position in stream, -1 if unknown
-    uint8_t *data;
-    int size;
-    int stream_index;
-    int flags;
+    uint8_t *data;//真正的数据地址
+    int size;//data的大小
+    int stream_index;//该媒体流在文件格式中的索引号
+    int flags;//关键帧等关键字
     void(*destruct)(struct AVPacket*);
 } AVPacket;
 
@@ -67,7 +72,7 @@ static inline void av_free_packet(AVPacket *pkt)
     if (pkt && pkt->destruct)
         pkt->destruct(pkt);
 }
-
+//av_read_packet 会调用此函数，实现从缓冲区pb读取数据到包里
 static inline int av_get_packet(ByteIOContext *s, AVPacket *pkt, int size)
 {
     int ret;
@@ -100,7 +105,7 @@ static inline int av_get_packet(ByteIOContext *s, AVPacket *pkt, int size)
 
     return ret;
 }
-
+//探测数据
 typedef struct AVProbeData
 {
     const char *filename;
