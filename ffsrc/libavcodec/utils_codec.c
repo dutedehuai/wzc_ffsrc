@@ -299,7 +299,7 @@ AVCodecContext *avcodec_alloc_context(void)
 
     return s;
 }
-
+//把AVCodecContext和AVCodec关联起来
 int avcodec_open(AVCodecContext *avctx, AVCodec *codec)
 {
     int ret =  - 1;

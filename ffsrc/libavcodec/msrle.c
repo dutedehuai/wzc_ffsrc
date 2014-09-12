@@ -258,10 +258,10 @@ static int msrle_decode_frame(AVCodecContext *avctx, void *data, int *data_size,
     switch (avctx->bits_per_sample)
     {
     case 8:
-        msrle_decode_pal8(s);
+        msrle_decode_pal8(s);//真正解码算法实现
         break;
     case 4:
-        msrle_decode_pal4(s);
+        msrle_decode_pal4(s);//真正解码算法实现
         break;
     default:
         break;

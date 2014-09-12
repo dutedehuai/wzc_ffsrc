@@ -1,18 +1,51 @@
-﻿生成启动时间为 2014/3/11 14:14:08。
-     1>项目“E:\study\ffmpeg\ffsrc\ffplay.vcxproj”在节点 2 上(build 个目标)。
-     1>InitializeBuildStatus:
-         正在创建“.\Debug\ffplay.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
-       ClCompile:
-         d:\VS2010\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\Debug\\" /Fd".\Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt ffplay.c
+﻿生成启动时间为 2014/9/13 0:39:25。
+     1>项目“E:\study\FFMPEG\wzc_ffsrc\ffsrc\ffplay.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         D:\vs2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /Gy- /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\Debug\\" /Fd".\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt libavcodec\allcodecs.c libavcodec\dsputil.c libavcodec\imgconvert.c libavcodec\msrle.c libavcodec\truespeech.c libavcodec\utils_codec.c libavformat\allformats.c libavformat\avidec.c libavformat\avio.c libavformat\aviobuf.c libavformat\cutils.c libavformat\file.c libavformat\utils_format.c ffplay.c
          ffplay.c
-     1>e:\study\ffmpeg\ffsrc\ffplay.c(94): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 d:\vs2010\vc\include\sys\timeb.h(124) : 参见“_ftime64”的声明
-     1>e:\study\ffmpeg\ffsrc\ffplay.c(371): warning C4018: “>=”: 有符号/无符号不匹配
-       ManifestResourceCompile:
-         所有输出均为最新。
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\ffplay.c(92): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\vs2013\vc\include\sys\timeb.h(131) : 参见“_ftime64”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\ffplay.c(370): warning C4018: “>=”: 有符号/无符号不匹配
+         utils_format.c
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\utils_format.c(5): warning C4005: “UINT_MAX”: 宏重定义
+                 d:\vs2013\vc\include\limits.h(41) : 参见“UINT_MAX”的前一个定义
+         file.c
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(34): warning C4996: '_open': This function or variable may be unsafe. Consider using _sopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\vs2013\vc\include\io.h(237) : 参见“_open”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(44): warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _read. See online help for details.
+                 d:\vs2013\vc\include\io.h(337) : 参见“read”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(50): warning C4996: 'write': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _write. See online help for details.
+                 d:\vs2013\vc\include\io.h(342) : 参见“write”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(56): warning C4244: “函数”: 从“offset_t”转换到“long”，可能丢失数据
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(56): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _lseek. See online help for details.
+                 d:\vs2013\vc\include\io.h(334) : 参见“lseek”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\file.c(62): warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _close. See online help for details.
+                 d:\vs2013\vc\include\io.h(326) : 参见“close”的声明
+         cutils.c
+         aviobuf.c
+         avio.c
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avio.c(44): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avio.c(67): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+         avidec.c
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avidec.c(121): warning C4244: “函数”: 从“int64_t”转换到“int”，可能丢失数据
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avidec.c(325): warning C4018: “>”: 有符号/无符号不匹配
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avidec.c(642): warning C4244: “+=”: 从“int64_t”转换到“unsigned int”，可能丢失数据
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavformat\avidec.c(646): warning C4018: “>=”: 有符号/无符号不匹配
+         allformats.c
+         utils_codec.c
+         truespeech.c
+         msrle.c
+         imgconvert.c
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavcodec\imgconvert.c(1091): warning C4146: 一元负运算符应用于无符号类型，结果仍为无符号类型
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavcodec\imgconvert_template.h(465): warning C4146: 一元负运算符应用于无符号类型，结果仍为无符号类型
+     1>e:\study\ffmpeg\wzc_ffsrc\ffsrc\libavcodec\imgconvert_template.h(859): warning C4146: 一元负运算符应用于无符号类型，结果仍为无符号类型
+         dsputil.c
+         allcodecs.c
+         正在生成代码...
        Link:
-         d:\VS2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\Debug\ffplay.exe" /INCREMENTAL /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\Debug\ffplay.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\study\ffmpeg\ffsrc\Debug\ffplay.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\Debug\ffplay.lib" /MACHINE:X86 .\Debug\ffplay.exe.embed.manifest.res
-         .\Debug\allcodecs.obj
+         D:\vs2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\Debug\ffplay.exe" /INCREMENTAL:NO /NOLOGO odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:".\Debug\ffplay.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\Debug\ffplay.lib" /MACHINE:X86 /SAFESEH .\Debug\allcodecs.obj
          .\Debug\dsputil.obj
          .\Debug\imgconvert.obj
          .\Debug\msrle.obj
@@ -26,17 +59,10 @@
          .\Debug\file.obj
          .\Debug\utils_format.obj
          .\Debug\ffplay.obj
-       Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:".\Debug\ffplay.exe.embed.manifest" /manifest .\Debug\ffplay.exe.intermediate.manifest
-         所有输出均为最新。
-       LinkEmbedManifest:
-         所有输出均为最新。
-         ffplay.vcxproj -> E:\study\ffmpeg\ffsrc\.\Debug\ffplay.exe
-       FinalizeBuildStatus:
-         正在删除文件“.\Debug\ffplay.unsuccessfulbuild”。
-         正在对“.\Debug\ffplay.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\study\ffmpeg\ffsrc\ffplay.vcxproj”(build 个目标)的操作。
+     1>allcodecs.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/OPT:LBR”规范)
+         ffplay.vcxproj -> E:\study\FFMPEG\wzc_ffsrc\ffsrc\.\Debug\ffplay.exe
+     1>已完成生成项目“E:\study\FFMPEG\wzc_ffsrc\ffsrc\ffplay.vcxproj”(Rebuild 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:00.44
+已用时间 00:00:11.89
