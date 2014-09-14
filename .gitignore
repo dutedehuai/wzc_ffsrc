@@ -1,0 +1,11 @@
+*.dsp
+*.dsw
+*.sdf
+*.sln
+*.suo
+*.vxcproj
+*.vxcproj.*
+*.obj
+*.opensdf
+*.idb
+*.pdb
