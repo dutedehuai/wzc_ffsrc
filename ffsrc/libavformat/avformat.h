@@ -51,7 +51,7 @@ typedef struct AVPacket
     int size;//data的大小
     int stream_index;//该媒体流在文件格式中的索引号
     int flags;//关键帧等关键字
-    void(*destruct)(struct AVPacket*);
+    void(*destruct)(struct AVPacket*);//本例子指向av_destruct_packet
 } AVPacket;
 
 typedef struct AVPacketList
