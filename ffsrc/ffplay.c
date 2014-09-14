@@ -15,7 +15,7 @@
 #include <SDL_thread.h>
 
 #ifdef CONFIG_WIN32
-#undef main // We don't want SDL to override our main()
+#undef main // We don't want SDL to override our   main()
 #endif
 
 #pragma comment(lib, "SDL.lib")
